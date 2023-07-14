@@ -2,9 +2,6 @@ use crate::address::*;
 use crate::flags::*;
 use core::arch::asm;
 use super::config::NK_TRAMPOLINE;
-use crate::debug_info;
-use crate::debug_os;
-use crate::debug_warn;
 
 ///////////////////////////////////
 /// 
@@ -51,10 +48,6 @@ macro_rules! entry_gate {
                 lateout("a1") $retval1,
             );
             asm!("fence.i");
-            
-            if $retval1 != 0 {
-            	debug_warn!("Err satus found.");
-            }
         }
 
     };
@@ -69,10 +62,6 @@ macro_rules! entry_gate {
                 lateout("a1") $retval1,
             );
             asm!("fence.i");
-            
-            if $retval1 != 0 {
-            	debug_warn!("Err satus found.");
-            }
         }
     };
     ($tar:expr,$t1:expr,$t2:expr,$retval0: expr, $retval1: expr) => {
@@ -87,10 +76,6 @@ macro_rules! entry_gate {
                 lateout("a1") $retval1,
             );
             asm!("fence.i");
-            
-            if $retval1 != 0 {
-            	debug_warn!("Err satus found.");
-            }
         }
     };
     ($tar:expr,$t1:expr,$t2:expr,$t3:expr,$retval0: expr, $retval1: expr) => {
@@ -106,10 +91,6 @@ macro_rules! entry_gate {
                 lateout("a1") $retval1,
             );
             asm!("fence.i");
-            
-            if $retval1 != 0 {
-            	debug_warn!("Err satus found.");
-            }
         }
     };
     ($tar:expr,$t1:expr,$t2:expr,$t3:expr,$t4:expr,$retval0: expr, $retval1: expr) => {
@@ -126,10 +107,6 @@ macro_rules! entry_gate {
                 lateout("a1") $retval1,
             );
             asm!("fence.i");
-            
-            if $retval1 != 0 {
-            	debug_warn!("Err satus found.");
-            }
         }
     };
     ($tar:expr,$t1:expr,$t2:expr,$t3:expr,$t4:expr,$t5:expr,$retval0: expr, $retval1: expr) => {
@@ -147,10 +124,6 @@ macro_rules! entry_gate {
                 lateout("a1") $retval1,
             );
             asm!("fence.i");
-            
-            if $retval1 != 0 {
-            	debug_warn!("Err satus found.");
-            }
         }
     };
 }
@@ -162,7 +135,7 @@ pub fn nkapi_time() -> usize{
     let retval1: usize;
     entry_gate!(NKAPI_TIME, retval0, retval1);
     if retval1 != 0 {
-        panic!("Error handling!");
+        panic!("Error occurs.");
     }
     return retval0;
 }
@@ -217,9 +190,6 @@ pub fn nkapi_alloc(pt_handle: usize, vpn: VirtPageNum, map_type: MapType, perm: 
     let retval1: usize;
     entry_gate!(NKAPI_ALLOC, pt_handle, vpn, 1 as usize, usize::from(map_type), perm, 
     retval0, retval1);
-    if retval1 != 0 {
-        panic!("Error handling!");
-    }
     return retval0.into();
 }
 
@@ -229,10 +199,6 @@ pub fn nkapi_alloc_mul(pt_handle: usize, vpn_start: VirtPageNum, vpn_end: VirtPa
     let size = vpn_end.0 - vpn_start.0 + 1;
     entry_gate!(NKAPI_ALLOC, pt_handle, vpn_start, size, usize::from(map_type), perm, 
     retval0, retval1);
-    
-    if retval1 != 0 {
-        panic!("Error handling: {}", retval1);
-    }
     return retval0.into();
 }
 
@@ -279,10 +245,8 @@ pub fn nkapi_set_signal_handler(entry: usize){
 pub fn nkapi_set_allocator_range(begin: usize, end: usize){
     let mut retval0: usize;
     let mut retval1: usize;
-    debug_os!("setting allocator 1");
     entry_gate!(NKAPI_CONFIG, NKCFG_ALLOCATOR_START, begin,
         retval0, retval1);
-    debug_os!("setting allocator 2");
     entry_gate!(NKAPI_CONFIG, NKCFG_ALLOCATOR_END, end,
         retval0, retval1);
 }
