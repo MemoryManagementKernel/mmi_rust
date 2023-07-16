@@ -14,7 +14,7 @@ pub const NKAPI_PT_INIT: usize = 2;
 pub const NKAPI_ALLOC: usize = 3;
 pub const NKAPI_DEALLOC: usize = 4;
 pub const NKAPI_ACTIVATE: usize = 5;
-pub const NKAPI_COPY_TO: usize = 6;
+pub const NKAPI_WRITE: usize = 6;
 pub const NKAPI_TRANSLATE: usize = 7;
 pub const NKAPI_GET_PTE: usize = 8;
 pub const NKAPI_FORK_PTE: usize = 9;
@@ -152,7 +152,7 @@ pub fn nkapi_translate(pt_handle: usize, vpn:VirtPageNum, write: bool) -> Option
 }
 
 pub fn nkapi_translate_va(pt_handle: usize, va:VirtAddr) -> Option<PhysAddr>{
-    if let Some(ppn) = nkapi_translate(pt_handle, va.floor(), true) {
+    if let Some(ppn) = nkapi_translate(pt_handle, va.floor(), false) {
         return Some(PhysAddr((ppn.0<<12) + va.page_offset()));
     }
     None
@@ -221,11 +221,11 @@ pub fn nkapi_activate(pt_handle: usize){
     entry_gate!(NKAPI_ACTIVATE, pt_handle ,retval0, retval1);
 }
 
-pub fn nkapi_copyTo(pt_handle: usize, mut current_vpn: VirtPageNum, data: &[u8], offset:usize){
+pub fn nkapi_write(pt_handle: usize, mut current_vpn: VirtPageNum, data: &[u8], len: usize, offset:usize){
     let retval0: usize;
     let retval1: usize;
-    entry_gate!(NKAPI_COPY_TO,pt_handle, current_vpn, 
-        data as *const [u8] as *const usize as usize, offset, retval0, retval1);
+    entry_gate!(NKAPI_WRITE,pt_handle, current_vpn, 
+        data as *const [u8] as *const usize as usize, len, offset, retval0, retval1);
 }
 
 pub fn nkapi_set_delegate_handler(entry: usize){
