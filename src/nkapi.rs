@@ -214,7 +214,7 @@ pub fn nkapi_pt_destroy(pt_handle: usize){
     let retval0: usize;
     let retval1: usize;
 
-    entry_gate!(NKAPI_PT_DESTORY,pt_handle, retval0, retval1);
+    entry_gate!(NKAPI_PT_DESTROY,pt_handle, retval0, retval1);
 }
 
 pub fn nkapi_dealloc(pt_handle: usize, vpn: VirtPageNum){
