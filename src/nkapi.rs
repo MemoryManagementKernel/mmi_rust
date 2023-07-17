@@ -8,19 +8,20 @@ use super::config::NK_TRAMPOLINE;
 /// the value below is NK call number.
 /// 
 
-pub const NKAPI_CONFIG: usize = 0;
-pub const NKAPI_TRAP_HANDLE: usize = 1;
+pub const NKAPI_TRAP_HANDLE: usize = 0;
+pub const NKAPI_CONFIG: usize = 1;
 pub const NKAPI_PT_INIT: usize = 2;
-pub const NKAPI_ALLOC: usize = 3;
-pub const NKAPI_DEALLOC: usize = 4;
-pub const NKAPI_ACTIVATE: usize = 5;
-pub const NKAPI_WRITE: usize = 6;
+pub const NKAPI_PT_DESTROY: usize = 3;
+pub const NKAPI_ALLOC: usize = 4;
+pub const NKAPI_DEALLOC: usize = 5;
+pub const NKAPI_ACTIVATE: usize = 6;
 pub const NKAPI_TRANSLATE: usize = 7;
-pub const NKAPI_GET_PTE: usize = 8;
-pub const NKAPI_FORK_PTE: usize = 9;
-pub const NKAPI_SET_PERM: usize = 10;
-pub const NKAPI_TIME: usize = 11;
-pub const NKAPI_DEBUG: usize = 12;
+pub const NKAPI_SET_PERM: usize = 8;
+pub const NKAPI_GET_PTE: usize = 9;
+pub const NKAPI_WRITE: usize = 10;
+pub const NKAPI_FORK_PTE: usize = 11;
+pub const NKAPI_TIME: usize = 12;
+pub const NKAPI_DEBUG: usize = 13;
 ///
 ///////////////////////////////////
 
@@ -207,6 +208,13 @@ pub fn nkapi_pt_init(pt_handle: usize, regenerate: bool){
     let retval1: usize;
 
     entry_gate!(NKAPI_PT_INIT,pt_handle, regenerate, retval0, retval1);
+}
+
+pub fn nkapi_pt_destroy(pt_handle: usize){
+    let retval0: usize;
+    let retval1: usize;
+
+    entry_gate!(NKAPI_PT_DESTORY,pt_handle, retval0, retval1);
 }
 
 pub fn nkapi_dealloc(pt_handle: usize, vpn: VirtPageNum){
