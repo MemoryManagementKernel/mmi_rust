@@ -30,7 +30,9 @@ pub const NKAPI_DEBUG: usize = 13;
 /// the value below is NK_TRAP_HANDLE param.
 /// 
 
-pub const NKCFG_DELEGATE: usize = 1; // config the trap delegation target address.
+
+pub const NKCFG_S_DELEGATE: usize = 0;
+pub const NKCFG_U_DELEGATE: usize = 1; 
 pub const NKCFG_SIGNAL: usize = 2;
 pub const NKCFG_ALLOCATOR_START: usize = 3;
 pub const NKCFG_ALLOCATOR_END: usize = 4;
@@ -236,10 +238,17 @@ pub fn nkapi_write(pt_handle: usize, mut current_vpn: VirtPageNum, data: &[u8], 
         data as *const [u8] as *const usize as usize, len, offset, retval0, retval1);
 }
 
-pub fn nkapi_set_delegate_handler(entry: usize){
+pub fn nkapi_set_user_delegate_handler(entry: usize){
     let retval0: usize;
     let retval1: usize;
-    entry_gate!(NKAPI_CONFIG, NKCFG_DELEGATE, entry,
+    entry_gate!(NKAPI_CONFIG, NKCFG_U_DELEGATE, entry,
+        retval0, retval1);
+}
+
+pub fn nkapi_set_kernel_delegate_handler(entry: usize){
+    let retval0: usize;
+    let retval1: usize;
+    entry_gate!(NKAPI_CONFIG, NKCFG_S_DELEGATE, entry,
         retval0, retval1);
 }
 
