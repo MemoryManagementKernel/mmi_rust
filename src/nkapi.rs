@@ -22,6 +22,8 @@ pub const NKAPI_WRITE: usize = 10;
 pub const NKAPI_FORK_PTE: usize = 11;
 pub const NKAPI_TIME: usize = 12;
 pub const NKAPI_DEBUG: usize = 13;
+pub const NKAPI_CURRENT_PT: usize = 14;
+
 ///
 ///////////////////////////////////
 
@@ -142,6 +144,17 @@ pub fn nkapi_time() -> usize{
     }
     return retval0;
 }
+
+pub fn nkapi_current_pt() -> usize{
+    let retval0: usize;
+    let retval1: usize;
+    entry_gate!(NKAPI_CURRENT_PT, retval0, retval1);
+    if retval1 != 0 {
+        panic!("Error occurs.");
+    }
+    return retval0;
+}
+
 
 pub fn nkapi_translate(pt_handle: usize, vpn:VirtPageNum, write: bool) -> Option<PhysPageNum>{
     let retval0: usize;
