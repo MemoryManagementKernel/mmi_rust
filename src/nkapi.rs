@@ -174,7 +174,7 @@ pub fn nkapi_translate_va(pt_handle: usize, va:VirtAddr) -> Option<PhysAddr>{
     None
 }
 
-pub fn nkapi_get_pte(pt_handle: usize, vpn: VirtPageNum) -> Option<PageTableEntry>{
+pub fn nkapi_get_pte(pt_handle: usize, vpn: VirtPageNum) -> Option<usize>{
     // if let Some(ppn) = nkapi_translate(pt_handle,va.clone().floor(),false) {
     //     let pa: PhysAddr = PhysAddr{0: ppn.0*crate::config::PAGE_SIZE + va.page_offset()};
     //     return Some(pa);
