@@ -272,14 +272,23 @@ pub fn nkapi_set_signal_handler(entry: usize){
         retval0, retval1);
 }
 
-pub fn nkapi_set_allocator_range(begin: usize, end: usize){
+pub fn nkapi_set_allocator_start(begin: usize){
     let mut retval0: usize;
     let mut retval1: usize;
     entry_gate!(NKAPI_CONFIG, NKCFG_ALLOCATOR_START, begin,
         retval0, retval1);
+    if retval1 != 0 {
+        panic!("Error occurs.");
+    }
+}
+
+pub fn nkapi_set_allocator_end(end: usize){
+    let mut retval0: usize;
+    let mut retval1: usize;
     entry_gate!(NKAPI_CONFIG, NKCFG_ALLOCATOR_END, end,
         retval0, retval1);
 }
+
 
 pub fn nkapi_set_permission(pt_handle: usize, vpn:VirtPageNum, flags: usize){
     let retval0: usize;
