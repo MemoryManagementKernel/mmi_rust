@@ -209,6 +209,9 @@ impl<T> Iterator for SimpleRangeIterator<T> where
 }
 pub type VPNRange = SimpleRange<VirtPageNum>;
 
+/*
+
+
 impl PhysPageNum{
     pub fn get_pte_array(&self) -> &'static mut [PageTableEntry] {
         let pa: PhysAddr = self.clone().into();
@@ -217,6 +220,7 @@ impl PhysPageNum{
         }
     }
 }
+
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -288,3 +292,5 @@ impl PageTableEntry {
     }
 
 }
+
+*/
