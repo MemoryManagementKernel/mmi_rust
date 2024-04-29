@@ -261,28 +261,28 @@ pub fn nkapi_write(pt_handle: usize, mut current_vpn: VirtPageNum, data: &[u8], 
 pub fn nkapi_set_user_delegate_handler(entry: usize){
     let retval0: usize;
     let retval1: usize;
-    entry_gate!(MMKAPI_CONFIG, NKCFG_U_DELEGATE, entry,
+    entry_gate!(MMKAPI_CONFIG, MMKCFG_U_DELEGATE, entry,
         retval0, retval1);
 }
 
 pub fn nkapi_set_kernel_delegate_handler(entry: usize){
     let retval0: usize;
     let retval1: usize;
-    entry_gate!(MMKAPI_CONFIG, NKCFG_S_DELEGATE, entry,
+    entry_gate!(MMKAPI_CONFIG, MMKCFG_S_DELEGATE, entry,
         retval0, retval1);
 }
 
 pub fn nkapi_set_signal_handler(entry: usize){
     let retval0: usize;
     let retval1: usize;
-    entry_gate!(MMKAPI_CONFIG, NKCFG_SIGNAL, entry,
+    entry_gate!(MMKAPI_CONFIG, MMKCFG_SIGNAL, entry,
         retval0, retval1);
 }
 
 pub fn nkapi_set_allocator_start(begin: usize){
     let mut retval0: usize;
     let mut retval1: usize;
-    entry_gate!(MMKAPI_CONFIG, NKCFG_ALLOCATOR_START, begin,
+    entry_gate!(MMKAPI_CONFIG, MMKCFG_ALLOCATOR_START, begin,
         retval0, retval1);
     if retval1 != 0 {
         panic!("Error occurs.");
@@ -292,7 +292,7 @@ pub fn nkapi_set_allocator_start(begin: usize){
 pub fn nkapi_set_allocator_end(end: usize){
     let mut retval0: usize;
     let mut retval1: usize;
-    entry_gate!(MMKAPI_CONFIG, NKCFG_ALLOCATOR_END, end,
+    entry_gate!(MMKAPI_CONFIG, MMKCFG_ALLOCATOR_END, end,
         retval0, retval1);
 }
 
