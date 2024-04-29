@@ -22,7 +22,11 @@ pub const NKAPI_WRITE: usize = 10;
 pub const NKAPI_FORK_PTE: usize = 11;
 pub const NKAPI_TIME: usize = 12;
 pub const NKAPI_DEBUG: usize = 13;
-pub const NKAPI_CURRENT_PT: usize = 14;
+
+pub const MMKAPI_ID_MEMBLOCK_SET_RANGE = 14;
+pub const MMKAPI_ID_MEMBLOCK_ALLOC_RANGE = 15;
+pub const MMKAPI_ID_MEMBLOCK_SET_FLAG = 16;
+pub const MMKAPI_ID_INQUIRE_MEMBLOCK = 17;
 
 ///
 ///////////////////////////////////
@@ -38,6 +42,9 @@ pub const NKCFG_U_DELEGATE: usize = 1;
 pub const NKCFG_SIGNAL: usize = 2;
 pub const NKCFG_ALLOCATOR_START: usize = 3;
 pub const NKCFG_ALLOCATOR_END: usize = 4;
+
+pub const MMKCFG_ID_MIN_PFN: usize = 5;
+
 ///
 ///////////////////////////////////
 /// 
@@ -48,7 +55,7 @@ macro_rules! entry_gate {
             asm!(
                 "jalr x1, x31, 0",
                 in("x31") NK_TRAMPOLINE,
-                in("x17") $tar as usize*8,
+                in("x17") $tar as usize,
                 lateout("a0") $retval0,
                 lateout("a1") $retval1,
             );
@@ -61,7 +68,7 @@ macro_rules! entry_gate {
             asm!(
                 "jalr x1, x31, 0",
                 in("x31") NK_TRAMPOLINE,
-                in("x17") $tar as usize*8,
+                in("x17") $tar as usize,
                 in("a0") usize::from($t1),
                 lateout("a0") $retval0,
                 lateout("a1") $retval1,
@@ -74,7 +81,7 @@ macro_rules! entry_gate {
             asm!(
                 "jalr x1, x31, 0",
                 in("x31") NK_TRAMPOLINE,
-                in("x17") $tar as usize*8,
+                in("x17") $tar as usize,
                 in("a0") usize::from($t1),
                 in("a1") usize::from($t2),
                 lateout("a0") $retval0,
@@ -88,7 +95,7 @@ macro_rules! entry_gate {
             asm!(
                 "jalr x1, x31, 0",
                 in("x31") NK_TRAMPOLINE,
-                in("x17") $tar as usize*8,
+                in("x17") $tar as usize,
                 in("a0") usize::from($t1),
                 in("a1") usize::from($t2),
                 in("a2") usize::from($t3),
@@ -103,7 +110,7 @@ macro_rules! entry_gate {
             asm!(
                 "jalr x1, x31, 0",
                 in("x31") NK_TRAMPOLINE,
-                in("x17") $tar as usize*8,
+                in("x17") $tar as usize,
                 in("a0") usize::from($t1),
                 in("a1") usize::from($t2),
                 in("a2") usize::from($t3),
@@ -119,7 +126,7 @@ macro_rules! entry_gate {
             asm!(
                 "jalr x1, x31, 0",
                 in("x31") NK_TRAMPOLINE,
-                in("x17") $tar as usize*8,
+                in("x17") $tar as usize,
                 in("a0") usize::from($t1),
                 in("a1") usize::from($t2),
                 in("a2") usize::from($t3),
