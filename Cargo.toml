@@ -1,6 +1,6 @@
 [package]
 name = "mmi"
-version = "0.1.13"
+version = "0.1.14"
 authors = ["JADDYK <12012211@mail.sustech.edu.cn>"]
 edition = "2018"
 

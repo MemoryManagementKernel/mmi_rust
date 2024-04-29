@@ -152,17 +152,6 @@ pub fn nkapi_time() -> usize{
     return retval0;
 }
 
-pub fn nkapi_current_pt() -> usize{
-    let retval0: usize;
-    let retval1: usize;
-    entry_gate!(MMKAPI_CURRENT_PT, retval0, retval1);
-    if retval1 != 0 {
-        panic!("Error occurs.");
-    }
-    return retval0;
-}
-
-
 pub fn nkapi_translate(pt_handle: usize, vpn:VirtPageNum, write: bool) -> Option<PhysPageNum>{
     let retval0: usize;
     let retval1: usize;
