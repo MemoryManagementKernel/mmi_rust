@@ -108,18 +108,6 @@ impl From<PhysPageNum> for PhysAddr {
     fn from(v: PhysPageNum) -> Self { Self(v.0 << PAGE_SIZE_BITS) }
 }
 
-impl VirtPageNum {
-    pub fn indexes(&self) -> [usize; 3] {
-        let mut vpn = self.0;
-        let mut idx = [0usize; 3];
-        for i in (0..3).rev() {
-            idx[i] = vpn & 511;
-            vpn >>= 9;
-        }
-        idx
-    }
-}
-
 impl PhysAddr {
     pub fn get_ref<T>(&self) -> &'static T {
         unsafe {
